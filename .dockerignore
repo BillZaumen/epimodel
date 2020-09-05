@@ -1,0 +1,7 @@
+.git
+epi/classes/*
+epi/Makefile
+**/Makefile
+**/*~
+**/*.java
+**/*.mf

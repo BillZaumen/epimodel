@@ -1,0 +1,132 @@
+<!DOCTYPE HTML>
+<HTML>
+<HEAD>
+<TITLE>Simplified Epidemiological Model</TITLE>
+</HEAD>
+<BODY style="background-color: #eaeaea">
+<H2>Simplified Epidemiological Model</H2>
+<script type="text/javascript">
+  function setgraph() {
+      var urlbase = "/servlet/adapter/";
+      var xmax = encodeURIComponent(document.getElementById("xmax").value);
+      var ymax = encodeURIComponent(document.getElementById("ymax").value);
+      var n = encodeURIComponent(document.getElementById("n").value);
+      var n0 = encodeURIComponent(document.getElementById("n0").value);
+      var ne0 = encodeURIComponent(document.getElementById("ne0").value);
+      var ni0 = encodeURIComponent(document.getElementById("ni0").value);
+      var r0 = encodeURIComponent(document.getElementById("r0").value);
+      var tau_e =
+	  encodeURIComponent(document.getElementById("tau_e").value);
+      var tau_i =
+	  encodeURIComponent(document.getElementById("tau_i").value);
+      var uri = urlbase + "?" + "XMax=" + xmax + "&YMax=" + ymax + "&N=" + n
+	  + "&N0=" + n0 + "&NE0=" + ne0 + "&NI0=" + ni0
+	  + "&R0=" + r0 + "&TAU_E=" + tau_e + "&TAU_I=" + tau_i;
+      document.getElementById("graph").src = uri;
+  }
+  function reset() {
+      document.getElementById("form").reset();
+  }
+</script>
+<P> The parameters used to create the graph shown below are the
+  following (these can be modified as desired, as long as the values
+  are non-negative numbers, with <STRONG>X<sub>max</sub></STRONG> a
+  positive integer):
+  <UL>
+    <LI><STRONG>X<sub>max</sub></STRONG> &mdash; the length of the X axis
+      in units of days. This value must be an integer.
+    <LI><STRONG>Y<sub>max</sub></STRONG> &mdash; the length of the Y axis
+      as a count of the number that is infectious.
+    <LI><STRONG>N</STRONG> &mdash; the size of the population.
+    <LI><STRONG>N<sub>0</sub></STRONG> &mdash; the initial number that
+      are exposed, infectious, or recovered.
+    <LI><STRONG>N<sub>E0</sub></STRONG> &mdash; the initial number that
+      was exposed but not yet infectious.
+    <LI><STRONG>N<sub>I0</sub></STRONG> &mdash; the initial number that
+      is infectious.
+    <LI><STRONG>R<sub>0</sub></STRONG> &mdash; the basic reproduction number
+      (the average number each infectious individual would infect if no one
+      else were infected). The behavior is very sensitive to this number and
+      it can be modified by changing human behavior for instance using a
+      mask to reduce the number of infections).
+    <LI><STRONG>&tau;<sub>E</sub></STRONG> &mdash; the length of the exposed
+      period in days.
+    <LI><STRONG>&tau;<sub>I</sub></STRONG> &mdash; the length of the infectious
+      period in days.
+  </UL>
+<P>
+  The black line shows the number of individuals who are infectious as
+  function of time. The blue line shows the percentage of the
+  population that is not susceptible. The right axis (i.e., the blue
+  axis) goes from 0% to 100%.
+<TABLE>
+  <TR><TH>Parameters</TH><TH>Graph</TH></TR>
+  <TR>
+    <TD style="vertical-align:top">
+      <FORM ID="form">
+	<TABLE>
+	  <TR><TD>X<sub>max</sub></TD>
+	    <TD><INPUT TYPE="TEXT" NAME="XMax" ID="xmax"
+		       onchange="setgraph()" value="360"></TD></TR>
+	  <TR><TD>Y<sub>max</sub></TD>
+	    <TD><INPUT TYPE="TEXT" NAME="YMax" ID="ymax"
+		       onchange="setgraph()" value="100000"></TD></TR>
+	  <TR><TD>N</TD>
+	    <TD><INPUT TYPE="TEXT" NAME="N" ID="n"
+		       onchange="setgraph()" value="1000000"></TD></TR>
+	  <TR><TD>N<sub>0</sub></TD>
+	    <TD><INPUT TYPE="TEXT" NAME="N0" ID="n0"
+		       onchange="setgraph()" value="10"></TD></TR>
+	  <TR><TD>N<sub>E0</sub></TD>
+	    <TD><INPUT TYPE="TEXT" NAME="NE0" ID="ne0"
+		       onchange="setgraph()" value="10"></TD></TR>
+	  <TR><TD>N<sub>I0</sub></TD>
+	    <TD><INPUT TYPE="TEXT" NAME="NI0" ID="ni0"
+		       onchange="setgraph()" value="0"></TD></TR>
+	  <TR><TD>R<sub>0</sub></TD>
+	    <TD><INPUT TYPE="TEXT" NAME="R0" ID="r0"
+		       onchange="setgraph()" value="2.0"></TD></TR>
+	  <TR><TD>&tau;<sub>E</sub></TD>
+	    <TD><INPUT TYPE="TEXT" NAME="TAU_E" ID="tau_e"
+		       onchange="setgraph()" value="7"></TD></TR>
+	  <TR><TD>&tau;<sub>I</sub></TD>
+	    <TD><INPUT TYPE="TEXT" NAME="TAU_I" ID="tau_i"
+		       onchange="setgraph()" value="7"></TD></TR>
+	  <TR><TD COLSPAN="2">&nbsp;</TD></TR>
+	  <TR><TD COLSPAN="2" style="text-align: center">
+	      <BUTTON TYPE="reset" NAME="RESET"
+		      onclick="reset(); setgraph()"
+		      style="background-color: #ff6666">
+		<BIG><STRONG>RESET</STRONG></BIG></BUTTON></TD></TR>
+	</TABLE>
+      </FORM>
+    </TD>
+    <TD>
+      <IMG SRC="/servlet/adapter/" WIDTH="600" HEIGHT="600" ID="graph">
+    </TD>
+</TABLE>
+<script type="text/javascript">
+  setgraph();
+</script>
+<P>
+  The graphs were produced by solving the following system of first-order
+  differential equations:
+  <UL>
+    <LI> n&prime;<sub>E</sub> = -n<sub>E</sub>/&tau;<sub>E</sub> + (R<sub>0</sub>/&tau;<sub>I</sub>)n<sub>I</sub>(1 - n/N)
+    <LI> n&prime;<sub>I</sub> = n<sub>E</sub>/&tau;<sub>E</sub> - n<sub>I</sub>/&tau;<sub>I</sub>
+    <LI> n&prime; = (R<sub>0</sub>/&tau;<sub>I</sub>)n<sub>I</sub>(1 - n/N)
+    </UL>
+  where
+  <UL>
+      <LI> <STRONG>n<sub>E</sub></STRONG> is the number who are exposed
+	and infected but not yet infectious at each point in time.
+      <LI> <STRONG>n<sub>I</sub></STRONG> is the number who are
+	infectious at each point in time. This value as a function of
+	time is shown on the graph by the black curve.
+      <LI> <STRONG>n</STRONG> is the cumulative number of cases
+	including those currently infected and those who have
+	recovered and are hence immune. This value as a function of
+	time is shown on the graph by the blue curve.
+  </UL>
+</BODY>
+</HTML>
