@@ -1,0 +1,32 @@
+This software creates an embedded web server using Java's
+built-in HttpServer class and some additional class libraries.
+The server can be run in a docker container.  It provides a
+web server that can produce a single HTML page and a single
+image containing a graph.  The HTML page uses forms so that
+various parameters can be updated, at which point a new
+graph is generated.
+
+The graph shows the results of running a simple epidemiological
+model, allowing the user to get a sense of how sensitive the
+behavior is to changes in various parameters.
+
+The software (trivial as it may be) was developed as follows:
+
+    1. The author spent a half hour in mid-March, 2020 creating
+    a simple epidemiologicl model to get an idea of what would
+    happen during the COVID-19 pandemic, as his county decided
+    to close everything down.  The model convinced him that a
+    month of inconvenience was a very optimistic assessment and
+    that the problems would go on for a lot longer, as it did.
+
+    2. The author then put this code into an embedded web server
+    as a test of a servlet-compatibility feature.
+
+    3. Then a docker file was added, also as a test.
+
+    4. While written primarily for testing, the author guessed that
+    the software might be useful to someone for getting a sense of
+    why various decisions are being made by local and state goverments:
+    those decisions are more understandable if you see how sensitive
+    the outcome is to changes in various parameters.
+   
