@@ -36,6 +36,7 @@ public class Adapter implements ServletAdapter {
 	    if (query == null) throw new Exception("no query");
 	    Map<String,String> qmap = WebDecoder.formDecode(query);
 	    int xmax = Integer.parseInt(qmap.get("XMax"));
+	    int xmaxm1 = xmax - 1;
 	    double ymax = Double.parseDouble(qmap.get("YMax"));
 	    double N = Double.parseDouble(qmap.get("N"));
 	    double n0 = Double.parseDouble(qmap.get("N0"));
@@ -44,25 +45,37 @@ public class Adapter implements ServletAdapter {
 	    double R0 = Double.parseDouble(qmap.get("R0"));
 	    double tauE = Double.parseDouble(qmap.get("TAU_E"));
 	    double tauI = Double.parseDouble(qmap.get("TAU_I"));
+	    double nV0 = Double.parseDouble(qmap.get("NV0"));
+	    double vMax = Double.parseDouble(qmap.get("V_MAX"));
+	    double tauV = Double.parseDouble(qmap.get("TAU_V"));
 	    double nt = ne0 + ni0;
 	    if (n0 < nt) n0 = nt;
 	    
-	    RungeKuttaMV rk = new RungeKuttaMV(3) {
+	    RungeKuttaMV rk = new RungeKuttaMV(4) {
 		    protected void applyFunction(double t, double[] y,
 						 double[] yprime)
 		    {
 			double nE = y[0];
 			double nI = y[1];
 			double n = y[2];
-			double scaledR0 = R0*(1-n/N);
+			double nV = y[3];
+			if (nV > N) nV = N;
+			if (n > N) n = N;
+			double scaledR0 = R0*(1-(n+nV)/N);
+			// to avoid double counting: vaccinating those who
+			// are exposed, infected, or recovered does not
+			// alter the number who can be infected.
+			double nfactor = (N - n)/N;
 			// for roundoff errors.
 			if (scaledR0 < 0.0) scaledR0 = 0.0;
 			yprime[0] = -nE/tauE + (scaledR0/tauI)*nI;
 			yprime[1] = nE/tauE - nI/tauI;
 			yprime[2] = (scaledR0/tauI)*nI;
+			yprime[3] = (nV + n >= N)? 0.0:
+			    nfactor*(vMax/tauV);
 		    }
 		};
-	    double[] initialValues = {ne0, ni0, n0};
+	    double[] initialValues = {ne0, ni0, n0, nV0};
 	    rk.setInitialValues(0.0, initialValues);
 	    BasicSplinePathBuilder spb1 = new BasicSplinePathBuilder();
 	    BasicSplinePathBuilder spb2 = new BasicSplinePathBuilder();
@@ -75,7 +88,7 @@ public class Adapter implements ServletAdapter {
 		double tincr = 1.0;
 		int m = 500;
 		rk.update(tincr, m);
-		SplinePathBuilder.CPointType type = (i < 149)?
+		SplinePathBuilder.CPointType type = (i < xmaxm1)?
 		    SplinePathBuilder.CPointType.SPLINE:
 		    SplinePathBuilder.CPointType.SEG_END;
 		spb1.append(new SplinePathBuilder.CPoint(type,

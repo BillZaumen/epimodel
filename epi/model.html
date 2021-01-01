@@ -19,9 +19,15 @@
 	  encodeURIComponent(document.getElementById("tau_e").value);
       var tau_i =
 	  encodeURIComponent(document.getElementById("tau_i").value);
+      var nv0 =	 encodeURIComponent(document.getElementById("nv0").value);
+      var v_max =
+	  encodeURIComponent(document.getElementById("v_max").value);
+      var tau_v =
+	  encodeURIComponent(document.getElementById("tau_v").value);
       var uri = urlbase + "?" + "XMax=" + xmax + "&YMax=" + ymax + "&N=" + n
 	  + "&N0=" + n0 + "&NE0=" + ne0 + "&NI0=" + ni0
-	  + "&R0=" + r0 + "&TAU_E=" + tau_e + "&TAU_I=" + tau_i;
+	  + "&R0=" + r0 + "&TAU_E=" + tau_e + "&TAU_I=" + tau_i
+	  + "&NV0=" + nv0 + "&V_MAX=" +v_max + "&TAU_V=" + tau_v;
       document.getElementById("graph").src = uri;
   }
   function reset() {
@@ -53,6 +59,13 @@
       period in days.
     <LI><STRONG>&tau;<sub>I</sub></STRONG> &mdash; the length of the infectious
       period in days.
+    <LI><STRONG>N<sub>V0</sub></STRONG> &mdash;the initial number that
+      are vacinated.
+    <LI><STRONG>V<sub>max</sub></STRONG> &mdash; the maximum number that
+      will be vacinated.
+    <LI><STRONG>&tau;<sub>V</sub></STRONG> &mdash; the time in days for
+      V<sub>max</sub> individuals to be vaccinated (i.e., starting from
+      0 vaccinations).
   </UL>
 <P>
   The black line shows the number of individuals who are infectious as
@@ -92,6 +105,15 @@
 	  <TR><TD>&tau;<sub>I</sub></TD>
 	    <TD><INPUT TYPE="TEXT" NAME="TAU_I" ID="tau_i"
 		       onchange="setgraph()" value="7"></TD></TR>
+	  <TR><TD>N<sub>V0</sub></TD>
+	    <TD><INPUT TYPE="TEXT" NAME="VN0" ID="nv0"
+		       onchange="setgraph()" value="0"></TD></TR>
+	  <TR><TD>V<sub>max</sub></TD>
+	    <TD><INPUT TYPE="TEXT" NAME="V_MAX" ID="v_max"
+		       onchange="setgraph()" value="0"></TD></TR>
+	  <TR><TD>&tau;<sub>V</sub></TD>
+	    <TD><INPUT TYPE="TEXT" NAME="TAU_V" ID="tau_v"
+		       onchange="setgraph()" value="180"></TD></TR>
 	  <TR><TD COLSPAN="2">&nbsp;</TD></TR>
 	  <TR><TD COLSPAN="2" style="text-align: center">
 	      <BUTTON TYPE="reset" NAME="RESET"
