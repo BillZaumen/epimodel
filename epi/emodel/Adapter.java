@@ -10,11 +10,28 @@ import java.util.zip.GZIPOutputStream;
 import org.bzdev.gio.OutputStreamGraphics;
 import org.bzdev.geom.*;
 import org.bzdev.graphs.*;
+import org.bzdev.lang.MathOps;
 import org.bzdev.math.RungeKuttaMV;
+import org.bzdev.math.Functions;
+import org.bzdev.util.ExpressionParser;
+import org.bzdev.util.ExpressionParser.EPFunction;
 import org.bzdev.net.*;
 import org.bzdev.net.ServletAdapter.ServletException;
 
 public class Adapter implements ServletAdapter {
+
+    ExpressionParser ep = null;
+
+    public void init(Map<String,String> parameters) {
+	try {
+	    ep = new
+		ExpressionParser(Math.class, MathOps.class, Functions.class);
+	    ep.setScriptingMode();
+	} catch (IllegalAccessException e) {
+	    // should not happen.
+	    e.printStackTrace(System.err);
+	}
+    }
 
     public void doGet(HttpServerRequest req, HttpServerResponse res)
 	throws IOException, ServletException
@@ -31,7 +48,6 @@ public class Adapter implements ServletAdapter {
 	Graph graph = new Graph (osg);
 	graph.setOffsets(50, 75, 75, 30);
 	String query = req.getQueryString();
-	// System.out.println("query = " + query);
 	try {
 	    if (query == null) throw new Exception("no query");
 	    Map<String,String> qmap = WebDecoder.formDecode(query);
@@ -42,7 +58,10 @@ public class Adapter implements ServletAdapter {
 	    double n0 = Double.parseDouble(qmap.get("N0"));
 	    double ne0 = Double.parseDouble(qmap.get("NE0"));
 	    double ni0 = Double.parseDouble(qmap.get("NI0"));
-	    double R0 = Double.parseDouble(qmap.get("R0"));
+	    // double R0 = Double.parseDouble(qmap.get("R0"));
+	    String script = "function (t) { " + qmap.get("R0") + "}";
+	    ExpressionParser.EPFunction R0f = (ExpressionParser.EPFunction)
+		ep.parse(script);
 	    double tauE = Double.parseDouble(qmap.get("TAU_E"));
 	    double tauI = Double.parseDouble(qmap.get("TAU_I"));
 	    double nV0 = Double.parseDouble(qmap.get("NV0"));
@@ -61,6 +80,7 @@ public class Adapter implements ServletAdapter {
 			double nV = y[3];
 			if (nV > N) nV = N;
 			if (n > N) n = N;
+			double R0 = ((Number)(R0f.invoke(t))).doubleValue();
 			double scaledR0 = R0*(1-(n+nV)/N);
 			// to avoid double counting: vaccinating those who
 			// are exposed, infected, or recovered does not
@@ -86,7 +106,7 @@ public class Adapter implements ServletAdapter {
 			 0.0, n0*100.0/N));
 	    for (int i = 0; i < xmax; i++) {
 		double tincr = 1.0;
-		int m = 500;
+		int m = 50;
 		rk.update(tincr, m);
 		SplinePathBuilder.CPointType type = (i < xmaxm1)?
 		    SplinePathBuilder.CPointType.SPLINE:

@@ -50,11 +50,17 @@
       was exposed but not yet infectious.
     <LI><STRONG>N<sub>I0</sub></STRONG> &mdash; the initial number that
       is infectious.
-    <LI><STRONG>R<sub>0</sub></STRONG> &mdash; the basic reproduction number
+    <LI><STRONG>R<sub>0(t)</sub></STRONG> &mdash; the basic reproduction number
       (the average number each infectious individual would infect if no one
       else were infected). The behavior is very sensitive to this number and
       it can be modified by changing human behavior for instance using a
-      mask to reduce the number of infections).
+      mask to reduce the number of infections). Consequently, R<sub>0</sub>
+      is modeled as a function of time. In the following form, the value for
+      R<sub>0</sub>(t) is an expression, using Javascript notation. The
+      variable <I>t</I> represents time.  A number of functions are available:
+      the ones one might expect such as exp, sqrt, sin, cos, and tan, but
+      also tanh, cosh, sinh, erf, and a host of  others (even j(n,t) for
+      a Bessel function of order n).  The value should never be negative.
     <LI><STRONG>&tau;<sub>E</sub></STRONG> &mdash; the length of the exposed
       period in days.
     <LI><STRONG>&tau;<sub>I</sub></STRONG> &mdash; the length of the infectious
@@ -72,11 +78,14 @@
   function of time. The blue line shows the percentage of the
   population that is not susceptible. The right axis (i.e., the blue
   axis) goes from 0% to 100%.
-<TABLE>
+  <FORM ID="form">
+  <TABLE>
+  <TR><TH>R<sub>0</sub>(t)</TH>
+    <TD><INPUT TYPE="TEXT" NAME="R0" ID="r0" size="70"
+	 onchange="setgraph()" value="2.0"></TD></TR>
   <TR><TH>Parameters</TH><TH>Graph</TH></TR>
   <TR>
     <TD style="vertical-align:top">
-      <FORM ID="form">
 	<TABLE>
 	  <TR><TD>X<sub>max</sub></TD>
 	    <TD><INPUT TYPE="TEXT" NAME="XMax" ID="xmax"
@@ -96,9 +105,6 @@
 	  <TR><TD>N<sub>I0</sub></TD>
 	    <TD><INPUT TYPE="TEXT" NAME="NI0" ID="ni0"
 		       onchange="setgraph()" value="0"></TD></TR>
-	  <TR><TD>R<sub>0</sub></TD>
-	    <TD><INPUT TYPE="TEXT" NAME="R0" ID="r0"
-		       onchange="setgraph()" value="2.0"></TD></TR>
 	  <TR><TD>&tau;<sub>E</sub></TD>
 	    <TD><INPUT TYPE="TEXT" NAME="TAU_E" ID="tau_e"
 		       onchange="setgraph()" value="7"></TD></TR>
@@ -121,12 +127,12 @@
 		      style="background-color: #ff6666">
 		<BIG><STRONG>RESET</STRONG></BIG></BUTTON></TD></TR>
 	</TABLE>
-      </FORM>
     </TD>
     <TD>
       <IMG SRC="/servlet/adapter/" WIDTH="600" HEIGHT="600" ID="graph">
     </TD>
 </TABLE>
+</FORM>
 <script type="text/javascript">
   setgraph();
 </script>

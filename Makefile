@@ -1,4 +1,4 @@
-VERSION = 1.3
+VERSION = 1.4
 
 LIBS = libbzdev-base.jar libbzdev-graphics.jar libbzdev-math.jar \
 	libbzdev-obnaming.jar libbzdev-ejws.jar libbzdev.jar libosgbatik.jar
@@ -12,6 +12,10 @@ docker: epi.jar
 
 start:
 	docker run --publish 80:80 --detach --name epi \
+		wtzbzdev/epimodel:$(VERSION)
+
+start-traced:
+	docker run --publish 80:80 --env TRACE=true --detach --name epi \
 		wtzbzdev/epimodel:$(VERSION)
 
 
