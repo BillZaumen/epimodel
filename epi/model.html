@@ -11,23 +11,24 @@
       var xmax = encodeURIComponent(document.getElementById("xmax").value);
       var ymax = encodeURIComponent(document.getElementById("ymax").value);
       var n = encodeURIComponent(document.getElementById("n").value);
-      var n0 = encodeURIComponent(document.getElementById("n0").value);
-      var ne0 = encodeURIComponent(document.getElementById("ne0").value);
-      var ni0 = encodeURIComponent(document.getElementById("ni0").value);
+      var nr0 = encodeURIComponent(document.getElementById("nr0percent").value);
+      var ne0 = encodeURIComponent(document.getElementById("ne0percent").value);
+      var ni0 = encodeURIComponent(document.getElementById("ni0percent").value);
       var r0 = encodeURIComponent(document.getElementById("r0").value);
       var tau_e =
 	  encodeURIComponent(document.getElementById("tau_e").value);
       var tau_i =
 	  encodeURIComponent(document.getElementById("tau_i").value);
-      var nv0 =	 encodeURIComponent(document.getElementById("nv0").value);
+      var nv0 =	 encodeURIComponent(document.getElementById("nv0percent")
+				    .value);
       var v_max =
-	  encodeURIComponent(document.getElementById("v_max").value);
+	  encodeURIComponent(document.getElementById("v_maxpercent").value);
       var tau_v =
 	  encodeURIComponent(document.getElementById("tau_v").value);
       var uri = urlbase + "?" + "XMax=" + xmax + "&YMax=" + ymax + "&N=" + n
-	  + "&N0=" + n0 + "&NE0=" + ne0 + "&NI0=" + ni0
+	  + "&NR0Percent=" + nr0 + "&NE0Percent=" + ne0 + "&NI0Percent=" + ni0
 	  + "&R0=" + r0 + "&TAU_E=" + tau_e + "&TAU_I=" + tau_i
-	  + "&NV0=" + nv0 + "&V_MAX=" +v_max + "&TAU_V=" + tau_v;
+	  + "&NV0Percent=" + nv0 + "&V_MAXPercent=" +v_max + "&TAU_V=" + tau_v;
       document.getElementById("graph").src = uri;
   }
   function reset() {
@@ -44,11 +45,11 @@
     <LI><STRONG>Y<sub>max</sub></STRONG> &mdash; the length of the Y axis
       as a count of the number that is infectious.
     <LI><STRONG>N</STRONG> &mdash; the size of the population.
-    <LI><STRONG>N<sub>0</sub></STRONG> &mdash; the initial number that
-      are exposed, infectious, or recovered.
-    <LI><STRONG>N<sub>E0</sub></STRONG> &mdash; the initial number that
+    <LI><STRONG>NR<sub>0</sub></STRONG> &mdash; the initial percentage that
+      are no long invectious (isolated or recovered)
+    <LI><STRONG>N<sub>E0</sub></STRONG> &mdash; the initial percentage that
       was exposed but not yet infectious.
-    <LI><STRONG>N<sub>I0</sub></STRONG> &mdash; the initial number that
+    <LI><STRONG>N<sub>I0</sub></STRONG> &mdash; the initial percentage that
       is infectious.
     <LI><STRONG>R<sub>0(t)</sub></STRONG> &mdash; the basic reproduction number
       (the average number each infectious individual would infect if no one
@@ -61,14 +62,20 @@
       the ones one might expect such as exp, sqrt, sin, cos, and tan, but
       also tanh, cosh, sinh, erf, and a host of  others (even j(n,t) for
       a Bessel function of order n).  The value should never be negative.
+      Conditionals are also allowed.  For example
+      <BLOCKQUOTE>
+	t &lt; 90? 1.1: t &lt; 180? 1.5: 2.2
+      </BLOCKQUOTE>
+      would set R<sub>0</sub> to 1.1 when t is less than 90, 1.5 when t is
+      less than 180, and 2.2 otherwise.
     <LI><STRONG>&tau;<sub>E</sub></STRONG> &mdash; the length of the exposed
       period in days.
     <LI><STRONG>&tau;<sub>I</sub></STRONG> &mdash; the length of the infectious
       period in days.
-    <LI><STRONG>N<sub>V0</sub></STRONG> &mdash;the initial number that
-      are vacinated.
-    <LI><STRONG>V<sub>max</sub></STRONG> &mdash; the maximum number that
-      will be vacinated.
+    <LI><STRONG>N<sub>V0</sub></STRONG> &mdash;the initial percentage that
+      are vaccinated.
+    <LI><STRONG>V<sub>max</sub></STRONG> &mdash; the maximum percentage that
+      will be vaccinated.
     <LI><STRONG>&tau;<sub>V</sub></STRONG> &mdash; the time in days for
       V<sub>max</sub> individuals to be vaccinated (i.e., starting from
       0 vaccinations).
@@ -82,7 +89,7 @@
   <TABLE>
   <TR><TH>R<sub>0</sub>(t)</TH>
     <TD><INPUT TYPE="TEXT" NAME="R0" ID="r0" size="70"
-	 onchange="setgraph()" value="2.0"></TD></TR>
+	 onchange="setgraph()" value="2.2"></TD></TR>
   <TR><TH>Parameters</TH><TH>Graph</TH></TR>
   <TR>
     <TD style="vertical-align:top">
@@ -96,26 +103,26 @@
 	  <TR><TD>N</TD>
 	    <TD><INPUT TYPE="TEXT" NAME="N" ID="n"
 		       onchange="setgraph()" value="1000000"></TD></TR>
-	  <TR><TD>N<sub>0</sub></TD>
-	    <TD><INPUT TYPE="TEXT" NAME="N0" ID="n0"
-		       onchange="setgraph()" value="10"></TD></TR>
-	  <TR><TD>N<sub>E0</sub></TD>
-	    <TD><INPUT TYPE="TEXT" NAME="NE0" ID="ne0"
-		       onchange="setgraph()" value="10"></TD></TR>
-	  <TR><TD>N<sub>I0</sub></TD>
-	    <TD><INPUT TYPE="TEXT" NAME="NI0" ID="ni0"
+	  <TR><TD>NR<sub>0 (%)</sub></TD>
+	    <TD><INPUT TYPE="TEXT" NAME="NR0Percent" ID="nr0percent"
 		       onchange="setgraph()" value="0"></TD></TR>
+	  <TR><TD>N<sub>E0 (%)</sub></TD>
+	    <TD><INPUT TYPE="TEXT" NAME="NE0Percent" ID="ne0percent"
+		       onchange="setgraph()" value="0.1"></TD></TR>
+	  <TR><TD>N<sub>I0 (%)</sub></TD>
+	    <TD><INPUT TYPE="TEXT" NAME="NI0Percent" ID="ni0percent"
+		       onchange="setgraph()" value="0.05"></TD></TR>
 	  <TR><TD>&tau;<sub>E</sub></TD>
 	    <TD><INPUT TYPE="TEXT" NAME="TAU_E" ID="tau_e"
 		       onchange="setgraph()" value="7"></TD></TR>
 	  <TR><TD>&tau;<sub>I</sub></TD>
 	    <TD><INPUT TYPE="TEXT" NAME="TAU_I" ID="tau_i"
 		       onchange="setgraph()" value="7"></TD></TR>
-	  <TR><TD>N<sub>V0</sub></TD>
-	    <TD><INPUT TYPE="TEXT" NAME="VN0" ID="nv0"
+	  <TR><TD>N<sub>V0 (%)</sub></TD>
+	    <TD><INPUT TYPE="TEXT" NAME="VN0Percent" ID="nv0percent"
 		       onchange="setgraph()" value="0"></TD></TR>
-	  <TR><TD>V<sub>max</sub></TD>
-	    <TD><INPUT TYPE="TEXT" NAME="V_MAX" ID="v_max"
+	  <TR><TD>V<sub>max</sub> (%)</TD>
+	    <TD><INPUT TYPE="TEXT" NAME="V_MAXPercent" ID="v_maxpercent"
 		       onchange="setgraph()" value="0"></TD></TR>
 	  <TR><TD>&tau;<sub>V</sub></TD>
 	    <TD><INPUT TYPE="TEXT" NAME="TAU_V" ID="tau_v"
@@ -140,9 +147,9 @@
   The graphs were produced by solving the following system of first-order
   differential equations:
   <UL>
-    <LI> n&prime;<sub>E</sub> = -n<sub>E</sub>/&tau;<sub>E</sub> + (R<sub>0</sub>/&tau;<sub>I</sub>)n<sub>I</sub>(1 - n/N)
+    <LI> n&prime;<sub>E</sub> = -n<sub>E</sub>/&tau;<sub>E</sub> + (R<sub>0</sub>/&tau;<sub>I</sub>)n<sub>I</sub>(1 - (n + n<sub>V</sub>)/N)
     <LI> n&prime;<sub>I</sub> = n<sub>E</sub>/&tau;<sub>E</sub> - n<sub>I</sub>/&tau;<sub>I</sub>
-    <LI> n&prime; = (R<sub>0</sub>/&tau;<sub>I</sub>)n<sub>I</sub>(1 - n/N)
+    <LI> n&prime; = (R<sub>0</sub>/&tau;<sub>I</sub>)n<sub>I</sub>(1 - (n + n<sub>V</sub>/N)
     <LI> n&prime;<sub>V</sub> = ((N-n)/N)(V<sub>max</sub>/&tau;<sub>V</sub>)
     </UL>
   where
@@ -156,7 +163,9 @@
 	including those currently infected and those who have
 	recovered and are hence immune. This value as a function of
 	time is shown on the graph by the blue curve.
-      <LI> <STRONG>n<sub>V</sub> is the number vaccinated.
+      <LI> <STRONG>n<sub>V</sub></STRONG> is the number vaccinated,
+	excluding (on the average) those who are already immune or
+	infected.
   </UL>
 </BODY>
 </HTML>

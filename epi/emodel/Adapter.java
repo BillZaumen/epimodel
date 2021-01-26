@@ -48,6 +48,7 @@ public class Adapter implements ServletAdapter {
 	Graph graph = new Graph (osg);
 	graph.setOffsets(50, 75, 75, 30);
 	String query = req.getQueryString();
+	String script = null;
 	try {
 	    if (query == null) throw new Exception("no query");
 	    Map<String,String> qmap = WebDecoder.formDecode(query);
@@ -55,17 +56,27 @@ public class Adapter implements ServletAdapter {
 	    int xmaxm1 = xmax - 1;
 	    double ymax = Double.parseDouble(qmap.get("YMax"));
 	    double N = Double.parseDouble(qmap.get("N"));
-	    double n0 = Double.parseDouble(qmap.get("N0"));
-	    double ne0 = Double.parseDouble(qmap.get("NE0"));
-	    double ni0 = Double.parseDouble(qmap.get("NI0"));
+	    double ne0 = (qmap.containsKey("NE0"))?
+		Double.parseDouble(qmap.get("NE0")):
+		N * Double.parseDouble(qmap.get("NE0Percent"))/100.0;
+	    double ni0 = (qmap.containsKey("NI0"))?
+		Double.parseDouble(qmap.get("NI0")):
+		N * Double.parseDouble(qmap.get("NI0Percent"))/100.0;
+	    double n0 = (qmap.containsKey("N0"))?
+		Double.parseDouble(qmap.get("N0")):
+		ne0 + ni0 + N*Double.parseDouble(qmap.get("NR0Percent"))/100.0;
 	    // double R0 = Double.parseDouble(qmap.get("R0"));
-	    String script = "function (t) { " + qmap.get("R0") + "}";
+	    script = "function (t) { " + qmap.get("R0") + "}";
 	    ExpressionParser.EPFunction R0f = (ExpressionParser.EPFunction)
 		ep.parse(script);
 	    double tauE = Double.parseDouble(qmap.get("TAU_E"));
 	    double tauI = Double.parseDouble(qmap.get("TAU_I"));
-	    double nV0 = Double.parseDouble(qmap.get("NV0"));
-	    double vMax = Double.parseDouble(qmap.get("V_MAX"));
+	    double nV0 = (qmap.containsKey("NV0"))?
+		Double.parseDouble(qmap.get("NV0")):
+		N * Double.parseDouble(qmap.get("NV0Percent"))/ 100.0;
+	    double vMax = (qmap.containsKey("V_MAX"))?
+		Double.parseDouble(qmap.get("V_MAX")):
+		N * Double.parseDouble(qmap.get("V_MAXPercent"))/100.0;
 	    double tauV = Double.parseDouble(qmap.get("TAU_V"));
 	    double nt = ne0 + ni0;
 	    if (n0 < nt) n0 = nt;
@@ -188,6 +199,8 @@ public class Adapter implements ServletAdapter {
 		msg = e.getClass().getSimpleName() + ": " + msg;
 	    }
 	    graph.drawString(msg, 0.0, 75.0);
+
+	    graph.drawString("R0: " + script, 0.0, 55.0);
 	}
 	graph.write();
 	osg.flush();
