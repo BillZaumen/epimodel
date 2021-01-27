@@ -1,4 +1,4 @@
-VERSION = 1.5
+VERSION = 1.6
 
 LIBS = libbzdev-base.jar libbzdev-graphics.jar libbzdev-math.jar \
 	libbzdev-obnaming.jar libbzdev-ejws.jar libbzdev.jar libosgbatik.jar

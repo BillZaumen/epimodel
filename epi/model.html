@@ -150,7 +150,11 @@
     <LI> n&prime;<sub>E</sub> = -n<sub>E</sub>/&tau;<sub>E</sub> + (R<sub>0</sub>/&tau;<sub>I</sub>)n<sub>I</sub>(1 - (n + n<sub>V</sub>)/N)
     <LI> n&prime;<sub>I</sub> = n<sub>E</sub>/&tau;<sub>E</sub> - n<sub>I</sub>/&tau;<sub>I</sub>
     <LI> n&prime; = (R<sub>0</sub>/&tau;<sub>I</sub>)n<sub>I</sub>(1 - (n + n<sub>V</sub>/N)
-    <LI> n&prime;<sub>V</sub> = ((N-n)/N)(V<sub>max</sub>/&tau;<sub>V</sub>)
+    <LI> n&prime;<sub>V</sub> = ((N-n)/N)(V<sub>max</sub>/&tau;<sub>V</sub>),
+      0.0 when v<sub>V</sub> + n &ge; N or n<sub>VA</sub> &ge; V<sub>max</sub>
+    <LI> n&prime;<sub>VA</sub> = (V<sub>max</sub>/&tau;<sub>V</sub>) when
+      n<sub>VA</sub> &lt; V<sub>max</sub>, 0.0 when n<sub>VA</sub>
+      = V<sub>max</sub>
     </UL>
   where
   <UL>
@@ -166,6 +170,8 @@
       <LI> <STRONG>n<sub>V</sub></STRONG> is the number vaccinated,
 	excluding (on the average) those who are already immune or
 	infected.
+      <LI> <STRONG>n<sub>VA</sub></STRONG> is the number who are
+	vaccinatated.
   </UL>
 </BODY>
 </HTML>

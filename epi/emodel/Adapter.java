@@ -81,7 +81,7 @@ public class Adapter implements ServletAdapter {
 	    double nt = ne0 + ni0;
 	    if (n0 < nt) n0 = nt;
 	    
-	    RungeKuttaMV rk = new RungeKuttaMV(4) {
+	    RungeKuttaMV rk = new RungeKuttaMV(5) {
 		    protected void applyFunction(double t, double[] y,
 						 double[] yprime)
 		    {
@@ -89,6 +89,7 @@ public class Adapter implements ServletAdapter {
 			double nI = y[1];
 			double n = y[2];
 			double nV = y[3];
+			double nVA = y[4];
 			if (nV > N) nV = N;
 			if (n > N) n = N;
 			double R0 = ((Number)(R0f.invoke(t))).doubleValue();
@@ -102,11 +103,12 @@ public class Adapter implements ServletAdapter {
 			yprime[0] = -nE/tauE + (scaledR0/tauI)*nI;
 			yprime[1] = nE/tauE - nI/tauI;
 			yprime[2] = (scaledR0/tauI)*nI;
-			yprime[3] = (nV + n >= N)? 0.0:
+			yprime[3] = (nV + n >= N || nVA >= vMax)? 0.0:
 			    nfactor*(vMax/tauV);
+			yprime[4] = (nVA >= vMax)? 0.0: vMax/tauV;
 		    }
 		};
-	    double[] initialValues = {ne0, ni0, n0, nV0};
+	    double[] initialValues = {ne0, ni0, n0, ((N-n0)/N)*nV0, nV0};
 	    rk.setInitialValues(0.0, initialValues);
 	    BasicSplinePathBuilder spb1 = new BasicSplinePathBuilder();
 	    BasicSplinePathBuilder spb2 = new BasicSplinePathBuilder();
