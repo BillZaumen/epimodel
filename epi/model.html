@@ -72,10 +72,14 @@
       period in days.
     <LI><STRONG>&tau;<sub>I</sub></STRONG> &mdash; the length of the infectious
       period in days.
-    <LI><STRONG>N<sub>V0</sub></STRONG> &mdash;the initial percentage that
-      are vaccinated.
-    <LI><STRONG>V<sub>max</sub></STRONG> &mdash; the maximum percentage that
-      will be vaccinated.
+    <LI><STRONG>N<sub>V0</sub></STRONG> &mdash;the initial percentage
+      that are vaccinated. The model treats vaccines as being 100%
+      effective so to approximate an actual vaccine, the value should
+      be scaled down.
+    <LI><STRONG>V<sub>max</sub></STRONG> &mdash; the maximum
+      percentage that will be vaccinated. The model treats vaccines as
+      being 100% effective so to approximate an actual vaccine, the
+      value should be scaled down.
     <LI><STRONG>&tau;<sub>V</sub></STRONG> &mdash; the time in days for
       V<sub>max</sub> individuals to be vaccinated (i.e., starting from
       0 vaccinations).
