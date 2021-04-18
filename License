@@ -1,7 +1,9 @@
-The source code in this respository is released under the
+The source code in this GIT repository is released under the
 GPL v3.0.
 
 Some of the libraries used have different licenses, but
-those libraries are not included in this repository
+those libraries are not included in this GIT repository
 (some are still being tested and extended before their
-first release).
+first release). Those libraries are in the Docker image.
+
+The Docker image may be deployed as desired.

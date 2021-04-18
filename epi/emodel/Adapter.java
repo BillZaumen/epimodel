@@ -14,7 +14,7 @@ import org.bzdev.lang.MathOps;
 import org.bzdev.math.RungeKuttaMV;
 import org.bzdev.math.Functions;
 import org.bzdev.util.ExpressionParser;
-import org.bzdev.util.ExpressionParser.EPFunction;
+import org.bzdev.util.ExpressionParser.ESPFunction;
 import org.bzdev.net.*;
 import org.bzdev.net.ServletAdapter.ServletException;
 
@@ -67,7 +67,7 @@ public class Adapter implements ServletAdapter {
 		ne0 + ni0 + N*Double.parseDouble(qmap.get("NR0Percent"))/100.0;
 	    // double R0 = Double.parseDouble(qmap.get("R0"));
 	    script = "function (t) { " + qmap.get("R0") + "}";
-	    ExpressionParser.EPFunction R0f = (ExpressionParser.EPFunction)
+	    ExpressionParser.ESPFunction R0f = (ExpressionParser.ESPFunction)
 		ep.parse(script);
 	    double tauE = Double.parseDouble(qmap.get("TAU_E"));
 	    double tauI = Double.parseDouble(qmap.get("TAU_I"));
