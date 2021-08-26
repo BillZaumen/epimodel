@@ -1,3 +1,4 @@
+import java.net.InetAddress;
 import org.bzdev.ejws.*;
 import org.bzdev.ejws.maps.*;
 import org.bzdev.net.HttpMethod;
@@ -18,9 +19,13 @@ public class Server {
 	int nthreads = (s == null)? 50: Integer.parseInt(s);
 	s = System.getenv("TRACE");
 	boolean trace = (s == null)? false: Boolean.parseBoolean(s);
+	s = System.getProperty("IPADDR");
+	InetAddress addr = (s == null || s.equals("wildcard"))? null:
+	    s.equalsIgnoreCase("loopback")? InetAddress.getLoopbackAddress():
+	    InetAddress.getByName(s);
 
 	EmbeddedWebServer ews = new
-	    EmbeddedWebServer(port, backlog, nthreads, null);
+	    EmbeddedWebServer(addr, port, backlog, nthreads, null);
 
 	ews.add("/", ResourceWebMap.class, "/", null, true, false, true);
 
