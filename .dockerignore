@@ -1,6 +1,10 @@
 .git
 epi/classes/*
+epi/classes/
+epi/emodel
+epi/model.html
 epi/Makefile
+epi/
 **/Makefile
 **/*~
 **/*.java
