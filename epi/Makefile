@@ -13,7 +13,8 @@ all: ../epi.jar
 ../epi.jar: epi.mf *.java emodel/*.java model.html
 	(cd ..; make libs)
 	mkdir -p classes
-	javac -d classes -classpath classes:/usr/share/bzdev/libbzdev.jar \
+	javac --release 11 -d classes \
+		-classpath classes:/usr/share/bzdev/libbzdev.jar \
 		*.java emodel/*.java
 	jar cmf epi.mf ../epi.jar -C classes . model.html
 
